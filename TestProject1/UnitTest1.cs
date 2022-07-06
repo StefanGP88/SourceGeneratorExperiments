@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SourceGenLib;
 using SourceGenTemplateLib;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -15,7 +14,7 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            Compilation inputCompilation = CreateCompilation(@"
+            var inputCompilation = CreateCompilation(@"
 using SourceGenLib;
 namespace MyCode
 {
@@ -38,7 +37,7 @@ namespace MyCode
     }
 }
 ");
-            EnumGen generator = new EnumGen();
+            var generator = new EnumGen();
             GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
             driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out var outputCompilation, out var diagnostics);
 
@@ -48,20 +47,20 @@ namespace MyCode
             var giag = outputCompilation.GetDiagnostics(); // verify the compilation with the added source has no diagnostics
 
 
-            GeneratorDriverRunResult runResult = driver.GetRunResult();
+            var runResult = driver.GetRunResult();
 
             // The runResult contains the combined results of all generators passed to the driver
             var length = runResult.GeneratedTrees.Length;
             var empty2 = runResult.Diagnostics.IsEmpty;
 
             // Or you can access the individual results on a by-generator basis
-          
+
         }
 
         [TestMethod]
         public void TemplateGeneratorTest()
         {
-            Compilation inputCompilation = CreateCompilation(@"
+            var inputCompilation = CreateCompilation(@"
 using SourceGenLib;
 namespace MyCode
 {
@@ -84,7 +83,7 @@ namespace MyCode
     }
 }
 ");
-            TemplateGenerator generator = new TemplateGenerator();
+            var generator = new TemplateGenerator();
             GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
             driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out var outputCompilation, out var diagnostics);
 
@@ -94,7 +93,7 @@ namespace MyCode
             var giag = outputCompilation.GetDiagnostics(); // verify the compilation with the added source has no diagnostics
 
 
-            GeneratorDriverRunResult runResult = driver.GetRunResult();
+            var runResult = driver.GetRunResult();
 
             // The runResult contains the combined results of all generators passed to the driver
             var length = runResult.GeneratedTrees.Length;
@@ -104,9 +103,33 @@ namespace MyCode
         }
 
         private static Compilation CreateCompilation(string source)
-     => CSharpCompilation.Create("compilation",
-         new[] { CSharpSyntaxTree.ParseText(source) },
-         new[] { MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location) },
-         new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+        {
+            return CSharpCompilation.Create("compilation",
+                 new[] { CSharpSyntaxTree.ParseText(source) },
+                 new[] { MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location) },
+                 new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+        }
+    }
+}
+
+namespace SourceGenTemplateLib
+{
+    public partial class TemplateHelper
+    {
+        public static string BobTemplate()
+        {
+            return @"namespace SourceGenTemplateLib
+{
+    public static class BobTemplate
+    {
+        public static void  Bob()
+        {
+            var x = 2M;
+            System.Console.WriteLine(x);
+        }
+    }
+}
+";
+        }
     }
 }

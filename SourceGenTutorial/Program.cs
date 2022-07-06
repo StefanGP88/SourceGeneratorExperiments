@@ -1,16 +1,18 @@
 ﻿using System;
 using SourceGenLib;
+using GeneratedNamespace;
 
 namespace MyApp // Note: actual namespace depends on the project name.
 {
-    public class Program
+    public partial class Program
     {
         static void Main(string[] args)
         {
             var bob = Colour.Green;
             Console.WriteLine(bob.ToStringFast());
-            //Console.WriteLine(a);
-        } 
+
+            GeneratedClass.GeneratedMethod3();
+        }
 
         [EnumExtensions("sdasdas")]
         public enum Colour
