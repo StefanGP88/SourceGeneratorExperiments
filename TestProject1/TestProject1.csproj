@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SourceGenLib\SourceGenLib.csproj" />
-    <ProjectReference Include="..\SourceGenTemplateLib\SourceGenTemplateLib.csproj" />
   </ItemGroup>
 
 </Project>

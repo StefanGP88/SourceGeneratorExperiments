@@ -1,7 +1,5 @@
 ﻿using System;
 using SourceGenLib;
-using GeneratedNamespace;
-
 namespace MyApp // Note: actual namespace depends on the project name.
 {
     public partial class Program
@@ -11,7 +9,6 @@ namespace MyApp // Note: actual namespace depends on the project name.
             var bob = Colour.Green;
             Console.WriteLine(bob.ToStringFast());
 
-            GeneratedClass.GeneratedMethod3();
         }
 
         [EnumExtensions("sdasdas")]

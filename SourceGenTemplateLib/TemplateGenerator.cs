@@ -64,7 +64,6 @@ namespace GeneratedNamespace
     }
 }", Encoding.UTF8));
 
-
             context.AddSource("myGeneratedFile2.cs", SourceText.From(@"
 namespace GeneratedNamespace
 {
@@ -76,7 +75,6 @@ namespace GeneratedNamespace
         }
     }
 }", Encoding.UTF8));
-
 
             context.AddSource("myGeneratedFile4.cs", SourceText.From(@"
 namespace GeneratedNamespace
@@ -90,37 +88,28 @@ namespace GeneratedNamespace
     }
 }", Encoding.UTF8));
 
+            //context.AddSource("myGeneratedFile5.cs", SourceText.From(TemplateHelperClass, Encoding.UTF8));
 
 
-            var currentFolder = AppDomain.CurrentDomain.BaseDirectory;
-            var fullPath = Path.Combine(currentFolder, "Templates");
-            var files = Directory.GetFiles(fullPath, "*.cs");
-
-            foreach (var item in files)
-            {
-                if (!File.Exists(item))
-                    continue;
-
-                var txt = File.ReadAllText(item);
-                txt=  txt.Replace(Environment.NewLine, " ").Replace("  ", " ");
-                var fileName = Path.GetFileNameWithoutExtension(item);
-
-                string methodTemplate = TemplateHelperClass
-                    .Replace("_TemplateName", fileName)
-                    .Replace("_TemplateCode", txt);
-
-                context.AddSource(fileName + ".cs", SourceText.From(methodTemplate, Encoding.UTF8));
-
-            }
         }
 
-        string TemplateHelperClass = @"namespace GeneratedNamespace
+            string TemplateHelperClass = @"namespace GeneratedNamespace
 {
     public partial class GeneratedClass
     {
-        public static string _TemplateName()
+        public static string BobTemplate()
         {
-            return @""_TemplateCode"";
+            return ""namespace SourceGenTemplateLib
+                    {
+                        public static class _ClassName
+                        {
+                            public static void  Bob()
+                            {
+                                var x = 2M;
+                                System.Console.WriteLine(x);
+                            }
+                        }
+                    }"";
         }
     }
 }";

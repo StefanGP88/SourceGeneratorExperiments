@@ -11,6 +11,5 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\SourceGenLib\SourceGenLib.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-		<ProjectReference Include="..\SourceGenTemplateLib\SourceGenTemplateLib.csproj"  ReferenceOutputAssembly="false" OutputItemType="Analyzer"/>
 	</ItemGroup>
 </Project>
