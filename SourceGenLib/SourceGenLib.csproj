@@ -24,4 +24,8 @@
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\SourceGenLib.Extensions\SourceGenLib.Extensions.csproj" />
+	  <ProjectReference Include="..\SourceGenLib.Markers\SourceGenLib.Markers.csproj" />
+	</ItemGroup>
 </Project>
