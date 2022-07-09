@@ -35,9 +35,8 @@ namespace SourceGenLib
                 = context.CompilationProvider.Combine(enumDeclarations.Collect());
 
 
-
             //Generate the source using the compilation and enums
-            context.RegisterSourceOutput(compilatedEnums, static (sourceProductionContext, source)
+            context. RegisterSourceOutput(compilatedEnums, static (sourceProductionContext, source)
                 => Execute(source.Item1, source.Item2, sourceProductionContext));
         }
 
@@ -232,7 +231,8 @@ namespace SourceGenLib{");
 
 
                 sb.Append(@"
-}");
+}
+");
             }
             return sb.ToString();
         }
