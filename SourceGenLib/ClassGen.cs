@@ -13,7 +13,10 @@ namespace SourceGenLib
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             var AttributeFinder = new AttributeFinder(context);
-            AttributeFinder.FindClassByAttribute("bob");
+            AttributeFinder.BuildFromClassAttribute<MyClassMarkerAttribute>(x =>
+            {
+                 return "some generated code";
+            });
         }
     }
 }

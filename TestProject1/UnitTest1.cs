@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SourceGenLib;
+using SourceGenLib.Markers;
 using SourceGenTemplateLib;
 using System.Linq;
 using System.Reflection;
@@ -16,17 +17,18 @@ namespace TestProject1
         {
             var inputCompilation = CreateCompilation(@"
 using SourceGenLib;
+using SourceGenLib.Markers;
 namespace MyCode
 {
     [MyClassMarker]
-    public class Program
+    public class Program : TestingStuff, ITestingMoreStuff
     {
 
-        //static void Main(string[] args)
-        //{
+        static void Main(string[] args)
+        {
         //    var c = Colour.Red;
         //    c.ToStringFast();
-        //}
+        }
 
         [EnumExtensions(""TestExtensionEnumClass"")]
         public enum Colour
@@ -35,6 +37,14 @@ namespace MyCode
             Green = 1,
             Blue = 2,
         }
+    }
+    
+    public class TestingStuff 
+    {
+    }
+    
+    public Interface ITestingMoreStuff
+    {
     }
 }
 ");
@@ -63,9 +73,9 @@ namespace MyCode
         {
             var inputCompilation = CreateCompilation(@"
 using SourceGenLib;
-namespace MyCode
+namespace MyCode.Testing
 {
-    public class Program
+    public static Program
     {
 
         //static void Main(string[] args)
@@ -74,13 +84,20 @@ namespace MyCode
         //    c.ToStringFast();
         //}
 
-        [EnumExtensions(""TestExtensionEnumClass"")]
+        [EnumExtensions(extensionClassName: ""TestExtensionEnumClass"", 15)]
         public enum Colour
         {
             Red = 0,
             Green = 1,
             Blue = 2,
         }
+
+        [EnumExtensions(Bob = 89, ExtensionClassName = ""john"")]
+        public enum TestStuff
+        {
+            ijdskjfdksdf
+        }
+
     }
 }
 ");
@@ -109,7 +126,11 @@ namespace MyCode
         {
             return CSharpCompilation.Create("compilation",
                  new[] { CSharpSyntaxTree.ParseText(source) },
-                 new[] { MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location) },
+                 new[]
+                 {
+                     MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location),
+                     MetadataReference.CreateFromFile(typeof(MyClassMarkerAttribute).GetTypeInfo().Assembly.Location)
+                 },
                  new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
     }

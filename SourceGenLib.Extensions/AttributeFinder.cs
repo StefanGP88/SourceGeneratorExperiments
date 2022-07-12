@@ -36,7 +36,7 @@ namespace SourceGenLib.Extensions
 
         }
 
-        public void FindClassByAttribute<T>(Func<MyClassInfo, string> sourceBuilder)
+        public void BuildFromClassAttribute<T>(Func<MyClassInfo, string> sourceBuilder)
         {
             var t = typeof(T);
             _context.RegisterSourceOutput(_compilatedClasses, (sourceProductionContext, source) =>
@@ -48,7 +48,7 @@ namespace SourceGenLib.Extensions
 
                 IEnumerable<ClassDeclarationSyntax> classDeclarations = classes.Distinct();
 
-                var classToGenerate = GetTypesToGenerate(compilation, classDeclarations, sourceProductionContext.CancellationToken);
+                var classToGenerate = GetTypesToGenerate<T>(compilation, classDeclarations, sourceProductionContext.CancellationToken);
 
                 foreach (var myClassInfo in classToGenerate)
                 {
@@ -61,9 +61,67 @@ namespace SourceGenLib.Extensions
         }
 
 
-        private static List<MyClassInfo> GetTypesToGenerate(Compilation compilation, IEnumerable<ClassDeclarationSyntax> enums, CancellationToken cancellationToken)
+        private List<MyClassInfo> GetTypesToGenerate<T>(Compilation compilation, IEnumerable<ClassDeclarationSyntax> classes, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = new List<MyClassInfo>();
+            var type = typeof(T);
+
+            INamedTypeSymbol? classAttribute = compilation.GetTypeByMetadataName(type.FullName);
+            INamedTypeSymbol? asd = compilation.GetTypeByMetadataName(type.Name);
+
+            if (classAttribute == null) return result;
+
+            foreach (ClassDeclarationSyntax classDeclarationSyntax in classes)
+            {
+                var myClassInfo = new MyClassInfo();
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                SemanticModel semanticModel = compilation.GetSemanticModel(classDeclarationSyntax.SyntaxTree);
+                if (semanticModel.GetDeclaredSymbol(classDeclarationSyntax) is not INamedTypeSymbol classSymbol)
+                {
+                    continue;
+                }
+                else
+                {
+                    myClassInfo.ClassName = classSymbol.ToString();
+                    myClassInfo.NameSpace = classSymbol.ContainingNamespace.ToString();
+                    myClassInfo.Modifiers = classDeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+                    myClassInfo.InherritsFrom = classSymbol.BaseType?.ToString();
+                    myClassInfo.Interfaces = classSymbol.Interfaces.Select(x=>x.Name).ToList();
+                    var access = myClassInfo.AccessModifier;
+                }
+
+                foreach (AttributeData attributeData in classSymbol.GetAttributes())
+                {
+                    if (!classAttribute.Equals(attributeData.AttributeClass, SymbolEqualityComparer.Default))
+                    {
+                        continue;
+                    }
+
+                    if(attributeData.ConstructorArguments.IsEmpty && attributeData.NamedArguments.IsEmpty)
+                    {
+                        continue;
+                    }
+
+                    myClassInfo.Attribute = new MyAttributeInfo();
+
+                    if (!attributeData.ConstructorArguments.IsEmpty)
+                    {
+                        myClassInfo.Attribute.CtorArgs = attributeData.ConstructorArguments
+                            .Select(x => x.Value)
+                            .ToList();
+                    }
+
+                    if (!attributeData.NamedArguments.IsEmpty)
+                    {
+                        myClassInfo.Attribute.NamedArgs = attributeData.NamedArguments
+                            .ToDictionary(x => x.Key, x => x.Value.Value);
+                    }
+                }
+            }
+
+            return result;
         }
 
 

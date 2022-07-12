@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using SourceGenLib.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -36,7 +37,7 @@ namespace SourceGenLib
 
 
             //Generate the source using the compilation and enums
-            context. RegisterSourceOutput(compilatedEnums, static (sourceProductionContext, source)
+            context.RegisterSourceOutput(compilatedEnums, static (sourceProductionContext, source)
                 => Execute(source.Item1, source.Item2, sourceProductionContext));
         }
 
@@ -84,6 +85,14 @@ namespace SourceGenLib
                     // something went wrong move to the next decalaration syntax
                     continue;
                 }
+                else
+                {
+                    var myClassInfoClassName = enumSymbol.ToString();
+                    var myClassInfoNameSpace = enumSymbol.ContainingNamespace.Name;
+                    var a = enumSymbol.ContainingNamespace.ToString();
+                    var aa = enumSymbol.ContainingNamespace.ToDisplayString();
+                    var aaaa = enumSymbol.ContainingNamespace.ToString();
+                }
 
                 //get fully qualified naem of the enum
                 var fullEnumName = enumSymbol.ToString();
@@ -97,10 +106,18 @@ namespace SourceGenLib
                         continue;
                     }
 
+
+                    var jack = attributeData.ConstructorArguments
+                            .Select(x => x.Value)
+                            .ToList();
+                    var alice = attributeData.NamedArguments
+                            .ToDictionary(x => x.Key, x => x.Value.Value);
+
                     if (!attributeData.ConstructorArguments.IsEmpty)
                     {
                         ImmutableArray<TypedConstant> args = attributeData.ConstructorArguments;
                         className = (string)args[0].Value!;
+                        var bob = args[1].Value?.ToString();
                     }
 
                     foreach (KeyValuePair<string, TypedConstant> namedArgument in attributeData.NamedArguments)
@@ -191,12 +208,18 @@ namespace SourceGenLib
     [System.AttributeUsage(System.AttributeTargets.Enum)]
     public class EnumExtensionsAttribute : System.Attribute
     {
-        public EnumExtensionsAttribute(string extensionClassName)
+        public EnumExtensionsAttribute(string extensionClassName, int bob)
         {
             ExtensionClassName = extensionClassName;
+            Bob = bob;
+        }
+
+        public EnumExtensionsAttribute()
+        {
         }
 
         public string ExtensionClassName { get; set; }
+        public int Bob { get; set; }
     }
 }";
 
