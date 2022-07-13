@@ -10,13 +10,13 @@ using System.Threading;
 
 namespace SourceGenLib.Extensions
 {
-    public class AttributeFinder
+    public class ClassAttributeFinder
     {
         private IncrementalGeneratorInitializationContext _context;
         private IncrementalValuesProvider<ClassDeclarationSyntax> _classDeclarations;
         private IncrementalValueProvider<(Compilation, ImmutableArray<ClassDeclarationSyntax>)> _compilatedClasses;
 
-        public AttributeFinder(IncrementalGeneratorInitializationContext context)
+        public ClassAttributeFinder(IncrementalGeneratorInitializationContext context)
         {
             _context = context;
 
@@ -35,10 +35,8 @@ namespace SourceGenLib.Extensions
             _compilatedClasses = _context.CompilationProvider.Combine(_classDeclarations.Collect());
 
         }
-
         public void BuildFromClassAttribute<T>(Func<MyClassInfo, string> sourceBuilder)
         {
-            var t = typeof(T);
             _context.RegisterSourceOutput(_compilatedClasses, (sourceProductionContext, source) =>
             {
                 var compilation = source.Item1;
@@ -59,8 +57,6 @@ namespace SourceGenLib.Extensions
                 }
             });
         }
-
-
         private List<MyClassInfo> GetTypesToGenerate<T>(Compilation compilation, IEnumerable<ClassDeclarationSyntax> classes, CancellationToken cancellationToken)
         {
             var result = new List<MyClassInfo>();
@@ -89,7 +85,6 @@ namespace SourceGenLib.Extensions
                     myClassInfo.Modifiers = classDeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
                     myClassInfo.InherritsFrom = classSymbol.BaseType?.ToString();
                     myClassInfo.Interfaces = classSymbol.Interfaces.Select(x=>x.Name).ToList();
-                    var access = myClassInfo.AccessModifier;
                 }
 
                 foreach (AttributeData attributeData in classSymbol.GetAttributes())
@@ -119,11 +114,11 @@ namespace SourceGenLib.Extensions
                             .ToDictionary(x => x.Key, x => x.Value.Value);
                     }
                 }
+
+                result.Add(myClassInfo);
             }
 
             return result;
         }
-
-
     }
 }

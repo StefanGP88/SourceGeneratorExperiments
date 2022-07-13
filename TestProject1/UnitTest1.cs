@@ -13,6 +13,49 @@ namespace TestProject1
     public class UnitTest1
     {
         [TestMethod]
+        public void MethodGen()
+        {
+            var inputCompilation = CreateCompilation(@"
+using SourceGenLib.Markers;
+
+namespace MyApp // Note: actual namespace depends on the project name.
+{
+    public partial class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine(""test"");
+        }
+
+        [MyMethodMarker]
+        public void Eric(int integer, string str)
+        {
+            Console.WriteLine(integer + "": "" + str);
+        }
+    }
+}
+");
+            var generator = new MethodGen();
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
+            driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out var outputCompilation, out var diagnostics);
+
+            // We can now assert things about the resulting compilation:
+            var empty = diagnostics.IsEmpty; // there were no diagnostics created by the generators
+            var count = outputCompilation.SyntaxTrees.Count(); // we have two syntax trees, the original 'user' provided one, and the one added by the generator
+            var giag = outputCompilation.GetDiagnostics(); // verify the compilation with the added source has no diagnostics
+
+
+            var runResult = driver.GetRunResult();
+
+            // The runResult contains the combined results of all generators passed to the driver
+            var length = runResult.GeneratedTrees.Length;
+            var empty2 = runResult.Diagnostics.IsEmpty;
+
+            // Or you can access the individual results on a by-generator basis
+
+        }
+
+        [TestMethod]
         public void ClassGen()
         {
             var inputCompilation = CreateCompilation(@"
