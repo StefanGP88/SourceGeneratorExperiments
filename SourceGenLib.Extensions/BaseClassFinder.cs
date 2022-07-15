@@ -10,20 +10,20 @@ using System.Threading;
 
 namespace SourceGenLib.Extensions
 {
-    public class ClassAttributeFinder
+    public class BaseClassFinder
     {
         private IncrementalGeneratorInitializationContext _context;
         private IncrementalValuesProvider<ClassDeclarationSyntax> _classDeclarations;
         private IncrementalValueProvider<(Compilation, ImmutableArray<ClassDeclarationSyntax>)> _compilatedClasses;
 
-        public ClassAttributeFinder(IncrementalGeneratorInitializationContext context)
+        public BaseClassFinder(IncrementalGeneratorInitializationContext context)
         {
             _context = context;
 
             _classDeclarations = _context.SyntaxProvider.CreateSyntaxProvider(
                 predicate: (syntaxNode, cancelToken) =>
                 {
-                    return syntaxNode is ClassDeclarationSyntax cds && cds.AttributeLists.Count > 0;
+                    return syntaxNode is ClassDeclarationSyntax cds && cds.BaseList != null;
                 },
                 transform: (ctx, cancelToken) =>
                 {
@@ -35,7 +35,7 @@ namespace SourceGenLib.Extensions
             _compilatedClasses = _context.CompilationProvider.Combine(_classDeclarations.Collect());
 
         }
-        public void BuildFromClassAttribute<T>(Func<MyClassInfo, string> sourceBuilder)
+        public void BuildFromClassBaseClass<T>(Func<MyClassInfo, string> sourceBuilder)
         {
             _context.RegisterSourceOutput(_compilatedClasses, (sourceProductionContext, source) =>
             {
@@ -62,10 +62,6 @@ namespace SourceGenLib.Extensions
             var result = new List<MyClassInfo>();
             var type = typeof(T);
 
-            INamedTypeSymbol? classAttribute = compilation.GetTypeByMetadataName(type.FullName);
-
-            if (classAttribute == null) return result;
-
             foreach (ClassDeclarationSyntax classDeclarationSyntax in classes)
             {
                 var myClassInfo = new MyClassInfo();
@@ -77,41 +73,16 @@ namespace SourceGenLib.Extensions
                 {
                     continue;
                 }
+                if(classSymbol.BaseType?.ToString() != type.FullName)
+                {
+                    continue;
+                }
 
                 myClassInfo.ClassName = classSymbol.ToString();
                 myClassInfo.NameSpace = classSymbol.ContainingNamespace.ToString();
                 myClassInfo.Modifiers = classDeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
                 myClassInfo.InherritsFrom = classSymbol.BaseType?.ToString();
                 myClassInfo.Interfaces = classSymbol.Interfaces.Select(x => x.Name).ToList();
-
-
-                foreach (AttributeData attributeData in classSymbol.GetAttributes())
-                {
-                    if (!classAttribute.Equals(attributeData.AttributeClass, SymbolEqualityComparer.Default))
-                    {
-                        continue;
-                    }
-
-                    if (attributeData.ConstructorArguments.IsEmpty && attributeData.NamedArguments.IsEmpty)
-                    {
-                        continue;
-                    }
-
-                    myClassInfo.Attribute = new MyAttributeInfo();
-
-                    if (!attributeData.ConstructorArguments.IsEmpty)
-                    {
-                        myClassInfo.Attribute.CtorArgs = attributeData.ConstructorArguments
-                            .Select(x => x.Value)
-                            .ToList();
-                    }
-
-                    if (!attributeData.NamedArguments.IsEmpty)
-                    {
-                        myClassInfo.Attribute.NamedArgs = attributeData.NamedArguments
-                            .ToDictionary(x => x.Key, x => x.Value.Value);
-                    }
-                }
 
                 result.Add(myClassInfo);
             }

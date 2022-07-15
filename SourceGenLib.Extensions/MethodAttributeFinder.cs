@@ -91,6 +91,21 @@ namespace SourceGenLib.Extensions
                     }
                 }
 
+                if(methodDeclarationSyntax.Parent?.SyntaxTree != null && methodDeclarationSyntax.Parent is ClassDeclarationSyntax parentClassDeclarationSyntax)
+                {
+                    SemanticModel parentSemanticModel = compilation.GetSemanticModel(methodDeclarationSyntax.Parent.SyntaxTree);
+                    if(parentSemanticModel.GetDeclaredSymbol(methodDeclarationSyntax.Parent) is INamedTypeSymbol parentClassSymbol)
+                    {
+                        var myClassInfo = new MyClassInfo();
+                        myClassInfo.ClassName = parentClassSymbol.ToString();
+                        myClassInfo.NameSpace = parentClassSymbol.ContainingNamespace.ToString();
+                        myClassInfo.Modifiers = parentClassDeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+                        myClassInfo.InherritsFrom = parentClassSymbol.BaseType?.ToString();
+                        myClassInfo.Interfaces = parentClassSymbol.Interfaces.Select(x => x.Name).ToList();
+                        myMethodInfo.ContainingClass = myClassInfo;
+                    }
+                }
+
                 foreach (AttributeData attributeData in methodSymbol.GetAttributes())
                 {
                     if (!methodAttribute.Equals(attributeData.AttributeClass, SymbolEqualityComparer.Default))

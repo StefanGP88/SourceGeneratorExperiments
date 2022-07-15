@@ -21,12 +21,12 @@ namespace SourceGenLib
     }
 
     [Generator]
-    public class MethodGen : IIncrementalGenerator
+    public class BaseClassGen : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            var AttributeFinder = new MethodAttributeFinder(context);
-            AttributeFinder.BuildFromMethodAttribute<MyMethodMarkerAttribute>(x =>
+            var AttributeFinder = new BaseClassFinder(context);
+            AttributeFinder.BuildFromClassBaseClass<TestBaseClass>(x =>
             {
                 return "some generated code";
             });
