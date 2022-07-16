@@ -120,7 +120,7 @@ using SourceGenLib.Markers;
 namespace MyCode
 {
     [MyClassMarker]
-    public static class Program : TestBaseClass
+    public static class Program : TestBaseClass, ITestingMoreStuff
     {
 
         static void Main(string[] args)
@@ -139,10 +139,6 @@ namespace MyCode
     }
     
     public class TestingStuff 
-    {
-    }
-    
-    public Interface ITestingMoreStuff
     {
     }
 }

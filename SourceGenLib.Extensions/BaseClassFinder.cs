@@ -34,6 +34,8 @@ namespace SourceGenLib.Extensions
 
             _compilatedClasses = _context.CompilationProvider.Combine(_classDeclarations.Collect());
 
+
+            var asdfg = _context.CompilationProvider;
         }
         public void BuildFromClassBaseClass<T>(Func<MyClassInfo, string> sourceBuilder)
         {

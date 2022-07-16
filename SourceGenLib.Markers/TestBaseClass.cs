@@ -3,4 +3,8 @@
     public class TestBaseClass
     {
     }
+    
+    public interface ITestingMoreStuff
+    {
+    }
 }
