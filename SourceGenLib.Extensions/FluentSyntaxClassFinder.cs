@@ -36,6 +36,28 @@ namespace SourceGenLib.Extensions
             {
                 var classFilter = new ClassFilter(source.Item1, source.Item2);
                 bob(classFilter);
+
+                if (classFilter._sourceBuilder == null)
+                    return;
+
+                if (!classFilter._foundClasses.Any())
+                    return;
+
+                var list = classFilter._foundClasses.ToList();
+
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    var myClassInfo = new MyClassInfo();
+
+                    myClassInfo.ClassName = list[i].Semantics.ToString();
+                    myClassInfo.NameSpace = list[i].Semantics.ContainingNamespace.ToString();
+                    myClassInfo.Modifiers = list[i].DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+                    myClassInfo.InherritsFrom = list[i].Semantics.BaseType?.ToString();
+                    myClassInfo.Interfaces = list[i].Semantics.Interfaces.Select(x => x.Name).ToList();
+
+                    var code = classFilter._sourceBuilder(myClassInfo);
+                    var fileName = $"{classFilter.TemplateName}_{i}.g.cs";
+                }
             });
         }
 
@@ -56,7 +78,8 @@ namespace SourceGenLib.Extensions
     {
         public Compilation _compilation;
         public IEnumerable<FoundClassContainer> _foundClasses;
-        Func<MyClassInfo, string>? _sourceBuilder;
+        public Func<MyClassInfo, string>? _sourceBuilder;
+        public string? TemplateName;
         public ClassFilter(Compilation compilation, IEnumerable<ClassDeclarationSyntax> classes)
         {
             _compilation = compilation;
@@ -83,9 +106,9 @@ namespace SourceGenLib.Extensions
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetAttributes().Any(z => 
+                return x.Semantics.GetAttributes().Any(z =>
                 {
-                    if(z.AttributeClass != null)
+                    if (z.AttributeClass != null)
                         return z.AttributeClass.Equals(attrib, SymbolEqualityComparer.Default);
                     return false;
                 });
@@ -103,7 +126,7 @@ namespace SourceGenLib.Extensions
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                if(x.Semantics.BaseType != null)
+                if (x.Semantics.BaseType != null)
                     return x.Semantics.BaseType.Equals(baseClass, SymbolEqualityComparer.Default);
                 return false;
 
@@ -121,7 +144,7 @@ namespace SourceGenLib.Extensions
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.Interfaces.Any(x=>x.Equals(interFace, SymbolEqualityComparer.Default));
+                return x.Semantics.Interfaces.Any(x => x.Equals(interFace, SymbolEqualityComparer.Default));
             });
 
             return this;
@@ -136,22 +159,26 @@ namespace SourceGenLib.Extensions
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return  x.Semantics.GetMembers().Any(x=>x.Equals(attrib, SymbolEqualityComparer.Default));
+                return x.Semantics.GetMembers().Any(x => x.Equals(attrib, SymbolEqualityComparer.Default));
             });
 
             return this;
         }
 
-        public ClassFilter SetCodeTemplate(Func<MyClassInfo, string>? sourceBuilder)
+        public ClassFilter SetCodeTemplate(string templateName, Func<MyClassInfo, string>? sourceBuilder)
         {
+            TemplateName = templateName;
             _sourceBuilder = sourceBuilder;
             return this;
         }
+
+
         private bool Exists<T>(out INamedTypeSymbol? symbol)
         {
             symbol = _compilation.GetTypeByMetadataName(typeof(T).FullName);
             return symbol != null;
         }
+
     }
 
     public class FoundClassContainer

@@ -25,7 +25,17 @@ namespace SourceGenLib
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.CodeTemplate(x=> x.SetCodeTemplate(x=> ""));
+            context.CodeTemplate(x=>
+            {
+                x.SetCodeTemplate("CodeTemplate", t =>
+                {
+                    var className = t.ClassName;
+                    var nameSpace = t.NameSpace;
+
+                    return "some template";
+                })
+                .WithInterface<IIncrementalGenerator>();
+            });
 
             var AttributeFinder = new BaseClassFinder(context);
             AttributeFinder.BuildFromClassBaseClass<TestBaseClass>(x =>
