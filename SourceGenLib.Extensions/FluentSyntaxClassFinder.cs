@@ -58,9 +58,6 @@ namespace SourceGenLib.Extensions
                 }
             });
         }
-
-
-
     }
 
     public static class FluentSyntaxExtensions
@@ -90,7 +87,7 @@ namespace SourceGenLib.Extensions
                 {
                     continue;
                 }
-                foundClassList.Add(new FoundClassContainer(cds, classSymbol));
+                foundClassList.Add(new FoundClassContainer(cds, classSymbol, _compilation));
             }
             _foundClasses = foundClassList;
         }
@@ -241,13 +238,16 @@ namespace SourceGenLib.Extensions
 
     public class FoundClassContainer
     {
-        public FoundClassContainer(ClassDeclarationSyntax declarationSyntax, INamedTypeSymbol semanticsModel)
+        private readonly Compilation _compilation;
+
+        public FoundClassContainer(ClassDeclarationSyntax declarationSyntax, INamedTypeSymbol semanticsModel, Compilation compilation)
         {
             DeclarationSyntax = declarationSyntax;
             Semantics = semanticsModel;
+            _compilation = compilation;
         }
-        public ClassDeclarationSyntax DeclarationSyntax { get; set; }
-        public INamedTypeSymbol Semantics { get; set; }
+        public ClassDeclarationSyntax DeclarationSyntax { get; }
+        public INamedTypeSymbol Semantics { get; }
 
         private string? _Namespace;
         public string Namespace
@@ -275,6 +275,13 @@ namespace SourceGenLib.Extensions
                 return _Modifiers ??= DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
             }
         }
+        public string AccessModifier
+        {
+            get
+            {
+                return Modifiers[0];
+            }
+        }
 
         private List<FoundAttributeContainer>? _FoundAttributes;
         public List<FoundAttributeContainer> FoundAttributes
@@ -285,6 +292,93 @@ namespace SourceGenLib.Extensions
             }
         }
 
+        private List<FoundMethodContainer>? _Methods;
+        public List<FoundMethodContainer> Methods
+        {
+            get
+            {
+                return _Methods ??= DeclarationSyntax.Members
+                    .Where(x => x is MethodDeclarationSyntax && _compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x) is IMethodSymbol)
+                    .Select(x => new FoundMethodContainer((MethodDeclarationSyntax)x, (IMethodSymbol)_compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!))
+                    .ToList();
+            }
+        }
+
+        private List<FoundConstructorContainer>? _Constructors;
+        public List<FoundConstructorContainer> Constructors
+        {
+            get
+            {
+                return _Constructors ??= DeclarationSyntax.Members
+                    .Where(x => x is ConstructorDeclarationSyntax && _compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x) is IMethodSymbol)
+                    .Select(x => new FoundConstructorContainer((ConstructorDeclarationSyntax)x, (IMethodSymbol)_compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!))
+                    .ToList();
+            }
+        }
+
+        private List<FoundDestructorContainer>? _Destructor;
+        public List<FoundDestructorContainer> Destructor
+        {
+            get
+            {
+                return _Destructor ??= DeclarationSyntax.Members
+                    .Where(x => x is DestructorDeclarationSyntax && _compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x) is IMethodSymbol)
+                    .Select(x => new FoundDestructorContainer((DestructorDeclarationSyntax)x, (IMethodSymbol)_compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!))
+                    .ToList();
+            }
+        }
+    }
+
+    public class FoundDestructorContainer : FoundBaseMethodContainer<DestructorDeclarationSyntax>
+    {
+        public FoundDestructorContainer(DestructorDeclarationSyntax destructorDeclarationSyntax, IMethodSymbol semntics)
+            : base(destructorDeclarationSyntax, semntics)
+        { }
+    }
+
+    public class FoundConstructorContainer : FoundBaseMethodContainer<ConstructorDeclarationSyntax>
+    {
+        public FoundConstructorContainer(ConstructorDeclarationSyntax methodDeclarationSyntax, IMethodSymbol semantics)
+            : base(methodDeclarationSyntax, semantics)
+        { }
+
+    }
+
+    public class FoundMethodContainer : FoundBaseMethodContainer<MethodDeclarationSyntax>
+    {
+        public FoundMethodContainer(MethodDeclarationSyntax methodDeclarationSyntax, IMethodSymbol semantics)
+            : base(methodDeclarationSyntax, semantics)
+        { }
+    }
+
+
+    public class FoundBaseMethodContainer<T> where T : BaseMethodDeclarationSyntax
+    {
+        public FoundBaseMethodContainer(T methodDeclarationSyntax, IMethodSymbol semantics)
+        {
+            DeclarationSyntax = methodDeclarationSyntax;
+            Semantics = semantics;
+        }
+        public IMethodSymbol Semantics { get; }
+        public T DeclarationSyntax { get; }
+
+        private string? _Method;
+        public string Method
+        {
+            get
+            {
+                return _Method ??= Semantics.ToString();
+            }
+        }
+
+        private List<string>? _Modifiers;
+        public List<string> Modifiers
+        {
+            get
+            {
+                return _Modifiers ??= DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+            }
+        }
         public string AccessModifier
         {
             get
@@ -292,7 +386,40 @@ namespace SourceGenLib.Extensions
                 return Modifiers[0];
             }
         }
+
+        private List<FoundAttributeContainer>? _FoundAttributes;
+        public List<FoundAttributeContainer> FoundAttributes
+        {
+            get
+            {
+                return _FoundAttributes ??= Semantics.GetAttributes().Select(x => new FoundAttributeContainer(x)).ToList();
+            }
+        }
+
+        //TODO: would probably make sense to have args in a "FoundContainer" class to access attributes 
+        private Dictionary<string, int>? _ArgIndexes;
+        public Dictionary<string, int> ArgIndexes
+        {
+            get
+            {
+                return _ArgIndexes ??= Semantics.Parameters
+                    .Select((x, i) => (name: x.Name, index: i))
+                    .ToDictionary(x => x.name, x => x.index);
+            }
+        }
+
+        private Dictionary<int, string>? _ArgTypes;
+        public Dictionary<int, string> ArgTypes
+        {
+            get
+            {
+                return _ArgTypes ??= Semantics.Parameters
+                    .Select((x, i) => (type: x.Type.Name, index: i))
+                    .ToDictionary(x => x.index, x => x.type);
+            }
+        }
     }
+
 
     public class FoundAttributeContainer
     {

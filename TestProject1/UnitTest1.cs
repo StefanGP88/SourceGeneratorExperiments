@@ -122,6 +122,11 @@ namespace MyCode
     [MyClassMarker]
     public static class Program : TestBaseClass, ITestingMoreStuff
     {
+        static string? GodMode {get; set;}
+
+
+        static Program(){}
+        static ~Program(){}
 
         static void Main(string[] args)
         {

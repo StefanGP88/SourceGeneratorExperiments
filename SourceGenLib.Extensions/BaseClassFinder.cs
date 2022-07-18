@@ -75,7 +75,7 @@ namespace SourceGenLib.Extensions
                 {
                     continue;
                 }
-                if(classSymbol.BaseType?.ToString() != type.FullName)
+                if (classSymbol.BaseType?.ToString() != type.FullName)
                 {
                     continue;
                 }
@@ -85,6 +85,57 @@ namespace SourceGenLib.Extensions
                 myClassInfo.Modifiers = classDeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
                 myClassInfo.InherritsFrom = classSymbol.BaseType?.ToString();
                 myClassInfo.Interfaces = classSymbol.Interfaces.Select(x => x.Name).ToList();
+
+
+                var afasfladsf = classDeclarationSyntax.Members;
+
+                var prop = classDeclarationSyntax.Members[0];
+                var prop_ = prop is PropertyDeclarationSyntax;
+                var prop_ImethodSymbol0 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(prop) is IMethodSymbol;
+                var prop_ImethodSymbol1 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(prop) is IDiscardSymbol;
+                var prop_ImethodSymbol2 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(prop) is IFieldSymbol;
+                var prop_ImethodSymbol3 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(prop) is INamedTypeSymbol;
+                var prop_ImethodSymbol4 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(prop) is IPropertySymbol;
+                var prop_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(prop) is ITypeSymbol;
+
+                var ctor = classDeclarationSyntax.Members[1];
+                var ctor_ = ctor is ConstructorDeclarationSyntax;
+                var ctor_ImethodSymbol0 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(ctor) is IMethodSymbol;
+                var ctor_ImethodSymbol1 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(ctor) is IDiscardSymbol;
+                var ctor_ImethodSymbol2 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(ctor) is IFieldSymbol;
+                var ctor_ImethodSymbol3 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(ctor) is INamedTypeSymbol;
+                var ctor_ImethodSymbol4 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(ctor) is IPropertySymbol;
+                var ctor_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(ctor) is ITypeSymbol;
+
+                var dtor = classDeclarationSyntax.Members[2];
+                var dtor_ = dtor is DestructorDeclarationSyntax;
+                var dtor_ImethodSymbol0 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IMethodSymbol;
+                var dtor_ImethodSymbol1 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IDiscardSymbol;
+                var dtor_ImethodSymbol2 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IFieldSymbol;
+                var dtor_ImethodSymbol3 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is INamedTypeSymbol;
+                var dtor_ImethodSymbol4 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IPropertySymbol;
+                var dtor_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is ITypeSymbol;
+
+                var meth = classDeclarationSyntax.Members[3];
+                var meth_ = meth is MethodDeclarationSyntax;
+                var meth_ImethodSymbol0 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IMethodSymbol;
+                var meth_ImethodSymbol1 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IDiscardSymbol;
+                var meth_ImethodSymbol2 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IFieldSymbol;
+                var meth_ImethodSymbol3 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is INamedTypeSymbol;
+                var meth_ImethodSymbol4 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IPropertySymbol;
+                var meth_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is ITypeSymbol;
+
+                var enm = classDeclarationSyntax.Members[4];
+                var enm_ = enm is EnumDeclarationSyntax;
+                var enm_ImethodSymbol0 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IMethodSymbol;
+                var enm_ImethodSymbol1 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IDiscardSymbol;
+                var enm_ImethodSymbol2 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IFieldSymbol;
+                var enm_ImethodSymbol3 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is INamedTypeSymbol;
+                var enm_ImethodSymbol4 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IPropertySymbol;
+                var enm_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is ITypeSymbol;
+
+
+
 
                 result.Add(myClassInfo);
             }
