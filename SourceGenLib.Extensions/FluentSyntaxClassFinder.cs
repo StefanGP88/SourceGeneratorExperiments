@@ -1,11 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 
 namespace SourceGenLib.Extensions
 {
@@ -251,7 +249,7 @@ namespace SourceGenLib.Extensions
         public ClassDeclarationSyntax DeclarationSyntax { get; set; }
         public INamedTypeSymbol Semantics { get; set; }
 
-        private string _Namespace;
+        private string? _Namespace;
         public string Namespace
         {
             get
@@ -260,21 +258,78 @@ namespace SourceGenLib.Extensions
             }
         }
 
-        private string _Class;
+        private string? _Class;
         public string Class
         {
             get
             {
-                return _Class ??=Semantics.ToString();
+                return _Class ??= Semantics.ToString();
             }
         }
 
-        private List<string> _Modifiers;
+        private List<string>? _Modifiers;
         public List<string> Modifiers
         {
             get
             {
                 return _Modifiers ??= DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+            }
+        }
+
+        private List<FoundAttributeContainer>? _FoundAttributes;
+        public List<FoundAttributeContainer> FoundAttributes
+        {
+            get
+            {
+                return _FoundAttributes ??= Semantics.GetAttributes().Select(x => new FoundAttributeContainer(x)).ToList();
+            }
+        }
+
+        public string AccessModifier
+        {
+            get
+            {
+                return Modifiers[0];
+            }
+        }
+    }
+
+    public class FoundAttributeContainer
+    {
+        public FoundAttributeContainer(AttributeData attributeData)
+        {
+            AttributeData = attributeData;
+        }
+
+        public AttributeData AttributeData { get; set; }
+
+        private string? _Attribute;
+        public string Attribute
+        {
+            get
+            {
+                return _Attribute ??= AttributeData.AttributeClass!.ToString();
+            }
+        }
+
+        private List<object?>? _CtorArgs;
+        public List<object?> ConstructorArgs
+        {
+            get
+            {
+                return _CtorArgs ??= AttributeData.ConstructorArguments
+                    .Select(x => x.Value)
+                    .ToList();
+            }
+        }
+
+        private Dictionary<string, object?>? _NamedArgs;
+        public Dictionary<string, object?> NamedArgs
+        {
+            get
+            {
+                return _NamedArgs ??= AttributeData.NamedArguments
+                    .ToDictionary(x => x.Key, x => x.Value.Value);
             }
         }
     }
