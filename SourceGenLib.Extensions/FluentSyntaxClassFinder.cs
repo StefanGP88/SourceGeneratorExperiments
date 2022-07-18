@@ -116,7 +116,25 @@ namespace SourceGenLib.Extensions
             });
             return this;
         }
+        public ClassFilter WithoutAttribute<T>()
+        {
+            if (Exists<T>(out var attrib))
+            {
+                return this;
+            }
 
+            _foundClasses = _foundClasses.Where(x =>
+            {
+                return x.Semantics.GetAttributes().All(z =>
+                {
+                    if (z.AttributeClass != null)
+                        return !z.AttributeClass.Equals(attrib, SymbolEqualityComparer.Default);
+                    return true;
+                });
+
+            });
+            return this;
+        }
         public ClassFilter WithBaseClass<T>()
         {
             if (Exists<T>(out var baseClass))
@@ -134,7 +152,23 @@ namespace SourceGenLib.Extensions
 
             return this;
         }
+        public ClassFilter WithoutBaseClass<T>()
+        {
+            if (Exists<T>(out var baseClass))
+            {
+                return this;
+            }
 
+            _foundClasses = _foundClasses.Where(x =>
+            {
+                if (x.Semantics.BaseType != null)
+                    return !x.Semantics.BaseType.Equals(baseClass, SymbolEqualityComparer.Default);
+                return true;
+
+            });
+
+            return this;
+        }
         public ClassFilter WithInterface<T>()
         {
             if (Exists<T>(out var interFace))
@@ -149,7 +183,20 @@ namespace SourceGenLib.Extensions
 
             return this;
         }
+        public ClassFilter WithoutInterface<T>()
+        {
+            if (Exists<T>(out var interFace))
+            {
+                return this;
+            }
 
+            _foundClasses = _foundClasses.Where(x =>
+            {
+                return x.Semantics.Interfaces.All(x => !x.Equals(interFace, SymbolEqualityComparer.Default));
+            });
+
+            return this;
+        }
         public ClassFilter WithMemberAttribute<T>()
         {
             if (Exists<T>(out var attrib))
@@ -164,6 +211,21 @@ namespace SourceGenLib.Extensions
 
             return this;
         }
+        public ClassFilter WithoutMemberAttribute<T>()
+        {
+            if (Exists<T>(out var attrib))
+            {
+                return this;
+            }
+
+            _foundClasses = _foundClasses.Where(x =>
+            {
+                return x.Semantics.GetMembers().All(x => !x.Equals(attrib, SymbolEqualityComparer.Default));
+            });
+
+            return this;
+        }
+
 
         public ClassFilter SetCodeTemplate(string templateName, Func<MyClassInfo, string>? sourceBuilder)
         {
@@ -171,8 +233,6 @@ namespace SourceGenLib.Extensions
             _sourceBuilder = sourceBuilder;
             return this;
         }
-
-
         private bool Exists<T>(out INamedTypeSymbol? symbol)
         {
             symbol = _compilation.GetTypeByMetadataName(typeof(T).FullName);
