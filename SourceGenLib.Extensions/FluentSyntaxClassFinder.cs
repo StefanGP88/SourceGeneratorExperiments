@@ -250,5 +250,32 @@ namespace SourceGenLib.Extensions
         }
         public ClassDeclarationSyntax DeclarationSyntax { get; set; }
         public INamedTypeSymbol Semantics { get; set; }
+
+        private string _Namespace;
+        public string Namespace
+        {
+            get
+            {
+                return _Namespace ??= Semantics.ContainingNamespace.ToString();
+            }
+        }
+
+        private string _Class;
+        public string Class
+        {
+            get
+            {
+                return _Class ??=Semantics.ToString();
+            }
+        }
+
+        private List<string> _Modifiers;
+        public List<string> Modifiers
+        {
+            get
+            {
+                return _Modifiers ??= DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+            }
+        }
     }
 }
