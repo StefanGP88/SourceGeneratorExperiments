@@ -327,15 +327,50 @@ namespace SourceGenLib.Extensions
                     .ToList();
             }
         }
+
+        private List<FoundPropertyContainer> _Properties;
+        public List<FoundPropertyContainer> Properties
+        {
+            get
+            {
+                return _Properties ??= DeclarationSyntax.Members
+                    .Where(x => x is PropertyDeclarationSyntax && _compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x) is IMethodSymbol)
+                    .Select(x => new FoundPropertyContainer((PropertyDeclarationSyntax)x, (IMethodSymbol)_compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!))
+                    .ToList();
+            }
+        }
+
+        private List<FoundFieldContainer> _Fields;
+        public List<FoundFieldContainer> Fields
+        {
+            get
+            {
+                return _Fields ??= DeclarationSyntax.Members
+                    .Where(x => x is PropertyDeclarationSyntax && _compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x) is IMethodSymbol)
+                    .Select(x => new FoundFieldContainer((FieldDeclarationSyntax)x, (IMethodSymbol)_compilation.GetSemanticModel(x.SyntaxTree).GetDeclaredSymbol(x)!))
+                    .ToList();
+            }
+        }
     }
 
+    public class FoundFieldContainer : FoundBaseMethodContainer<FieldDeclarationSyntax>
+    {
+        public FoundFieldContainer(FieldDeclarationSyntax methodDeclarationSyntax, IMethodSymbol semantics)
+            : base(methodDeclarationSyntax, semantics)
+        { }
+    }
+    public class FoundPropertyContainer : FoundBaseMethodContainer<PropertyDeclarationSyntax>
+    {
+        public FoundPropertyContainer(PropertyDeclarationSyntax methodDeclarationSyntax, IMethodSymbol semantics)
+            : base(methodDeclarationSyntax, semantics)
+        { }
+    }
     public class FoundDestructorContainer : FoundBaseMethodContainer<DestructorDeclarationSyntax>
     {
         public FoundDestructorContainer(DestructorDeclarationSyntax destructorDeclarationSyntax, IMethodSymbol semntics)
             : base(destructorDeclarationSyntax, semntics)
         { }
     }
-
     public class FoundConstructorContainer : FoundBaseMethodContainer<ConstructorDeclarationSyntax>
     {
         public FoundConstructorContainer(ConstructorDeclarationSyntax methodDeclarationSyntax, IMethodSymbol semantics)
@@ -343,7 +378,6 @@ namespace SourceGenLib.Extensions
         { }
 
     }
-
     public class FoundMethodContainer : FoundBaseMethodContainer<MethodDeclarationSyntax>
     {
         public FoundMethodContainer(MethodDeclarationSyntax methodDeclarationSyntax, IMethodSymbol semantics)
@@ -351,8 +385,7 @@ namespace SourceGenLib.Extensions
         { }
     }
 
-
-    public class FoundBaseMethodContainer<T> where T : BaseMethodDeclarationSyntax
+    public class FoundBaseMethodContainer<T> where T : MemberDeclarationSyntax
     {
         public FoundBaseMethodContainer(T methodDeclarationSyntax, IMethodSymbol semantics)
         {

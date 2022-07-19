@@ -135,6 +135,14 @@ namespace SourceGenLib.Extensions
                 var enm_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is ITypeSymbol;
 
 
+                var field = classDeclarationSyntax.Members[5];
+                var field_ = field is FieldDeclarationSyntax;
+                var field_ImethodSymbol0 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IMethodSymbol;
+                var field_ImethodSymbol1 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IDiscardSymbol;
+                var field_ImethodSymbol2 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IFieldSymbol;
+                var field_ImethodSymbol3 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is INamedTypeSymbol;
+                var field_ImethodSymbol4 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is IPropertySymbol;
+                var field_ImethodSymbol5 = compilation.GetSemanticModel(prop.SyntaxTree).GetDeclaredSymbol(dtor) is ITypeSymbol;
 
 
                 result.Add(myClassInfo);

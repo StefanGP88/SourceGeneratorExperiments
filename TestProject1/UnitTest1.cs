@@ -124,7 +124,6 @@ namespace MyCode
     {
         static string? GodMode {get; set;}
 
-
         static Program(){}
         static ~Program(){}
 
@@ -141,6 +140,8 @@ namespace MyCode
             Green = 1,
             Blue = 2,
         }
+
+        static int? Bob;
     }
     
     public class TestingStuff 
