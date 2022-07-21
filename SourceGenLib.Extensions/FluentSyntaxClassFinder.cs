@@ -498,38 +498,3 @@ namespace SourceGenLib.Extensions
         }
     }
 }
-/*  Crate PROPERTY LIST!!!
- * DelegateDeclarationSyntax
- * EnumMemberDeclarationSyntax
- * EventFieldDeclarationSyntax
- * ConstructorDeclarationSyntax
- * DestructorDeclarationSyntax
- * PropertyDeclarationSyntax
- * EventDeclarationSyntax
- * IndexerDeclarationSyntax
- * IncompleteMemberSyntax
- * 
- * 
- * 
- * BaseFieldDeclarationSyntax
- * FieldDeclarationSyntax
- * EventFieldDeclarationSyntax
- * 
- * 
- * 
- * BaseMethodDeclarationSyntax
- * MethodDeclarationSyntax
- * OperatorDeclarationSyntax
- * ConversionOperatorDeclarationSyntax
- * ConstructorDeclarationSyntax
- * DestructorDeclarationSyntax
- * 
- * 
- * 
- * 
- * BasePropertyDeclarationSyntax
- * PropertyDeclarationSyntax
- * EventDeclarationSyntax
- * IndexerDeclarationSyntax
- * 
- */
