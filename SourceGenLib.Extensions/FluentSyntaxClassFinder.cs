@@ -328,7 +328,7 @@ namespace SourceGenLib.Extensions
             }
         }
 
-        private List<FoundPropertyContainer> _Properties;
+        private List<FoundPropertyContainer>? _Properties;
         public List<FoundPropertyContainer> Properties
         {
             get
@@ -340,7 +340,7 @@ namespace SourceGenLib.Extensions
             }
         }
 
-        private List<FoundFieldContainer> _Fields;
+        private List<FoundFieldContainer>? _Fields;
         public List<FoundFieldContainer> Fields
         {
             get
@@ -409,7 +409,9 @@ namespace SourceGenLib.Extensions
         {
             get
             {
-                return _Modifiers ??= DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
+                return _Modifiers ??= DeclarationSyntax.Modifiers
+                    .Select(x => x.Text)
+                    .ToList();
             }
         }
         public string AccessModifier
@@ -425,7 +427,9 @@ namespace SourceGenLib.Extensions
         {
             get
             {
-                return _FoundAttributes ??= Semantics.GetAttributes().Select(x => new FoundAttributeContainer(x)).ToList();
+                return _FoundAttributes ??= Semantics.GetAttributes()
+                    .Select(x => new FoundAttributeContainer(x))
+                    .ToList();
             }
         }
 
