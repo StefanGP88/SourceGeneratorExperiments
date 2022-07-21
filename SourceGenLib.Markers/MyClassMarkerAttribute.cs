@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace SourceGenLib.Markers
+﻿namespace SourceGenLib.Markers
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class MyClassMarkerAttribute : Attribute
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
+    public class MyClassMarkerAttribute : System.Attribute
     {
     }
 }
