@@ -5,7 +5,7 @@ namespace TestProject1
 {
     internal static class SourceCode
     {
-        //todo expected result here
+        internal static SyntaxTree WithAttributeExpectedResult => GetExpectedResult("WithAttributeTestClass");
         internal static SyntaxTree WithAttribute => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.Unittest
 {
@@ -16,25 +16,43 @@ namespace FluentSyntaxGenerator.Unittest
     }
 }
 ");
+
+
+        internal static SyntaxTree WithoutAttributeExpectedResult => GetExpectedResult("WithoutAnythingTestClass");
         internal static SyntaxTree WithoutAttribute => WithoutAnything;
+
+
+        internal static SyntaxTree WithBaseClassExpectedResult => GetExpectedResult("WithBassClassTestClass");
         internal static SyntaxTree WithBaseClass => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.Unittest
 {
-    public partial class WithEverythingTestClass : TestBaseClass
+    public partial class WithBassClassTestClass : TestBaseClass
     {
     }
 }
 ");
+
+
+        internal static SyntaxTree WithoutBaseClassExpectedResult => GetExpectedResult("WithoutAnythingTestClass");
         internal static SyntaxTree WithoutBaseClass => WithoutAnything;
+
+
+        internal static SyntaxTree WithInterfaceExpectedResult => GetExpectedResult("WithInterfaceTestClass");
         internal static SyntaxTree WithInterface => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.Unittest
 {
-    public partial class WithEverythingTestClass :  ITestInterFace
+    public partial class WithInterfaceTestClass :  ITestInterFace
     {
     }
 }
 ");
+
+
+        internal static SyntaxTree WithoutInterfaceExpectedResult => GetExpectedResult("WithoutAnythingTestClass");
         internal static SyntaxTree WithoutInterface => WithoutAnything;
+
+
+        internal static SyntaxTree WithMemberAttributeExpectedResult => GetExpectedResult("WithMemberAttributeTestClass");
         internal static SyntaxTree WithMemberAttribute => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.Unittest
 {
@@ -47,7 +65,13 @@ namespace FluentSyntaxGenerator.Unittest
     }
 }
 ");
+
+
+        internal static SyntaxTree WithoutMemberAttributeExpectedResult => GetExpectedResult("WithoutAnythingTestClass");
         internal static SyntaxTree WithoutMemberAttribute => WithoutAnything;
+
+
+        internal static SyntaxTree WithEverythingExpectedResult => GetExpectedResult("WithEverythingTestClass");
         internal static SyntaxTree WithEverything => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.Unittest
 {
@@ -61,6 +85,9 @@ namespace FluentSyntaxGenerator.Unittest
     }
 }
 ");
+
+
+        internal static SyntaxTree WithoutAnythingExpectedResult => GetExpectedResult("WithoutAnythingTestClass");
         internal static SyntaxTree WithoutAnything => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.UnitTest
 {
@@ -70,5 +97,21 @@ namespace FluentSyntaxGenerator.UnitTest
     }
 }
 ");
+
+        internal static SyntaxTree GetExpectedResult(string className)
+        {
+            return CSharpSyntaxTree.ParseText(@$"
+namespace FluentSyntaxGenerator.Unittest
+{{
+    public partial class {className}
+    {{
+        public void Print()
+        {{
+            System.Console.WriteLine(""Made with fluent generator"");
+        }}
+    }}
+}}
+");
+        }
     }
 }
