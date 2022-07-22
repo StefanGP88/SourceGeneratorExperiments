@@ -36,5 +36,20 @@ namespace FluentSyntaxGenerator.Unittest
                 SourceText.From(TestMarkers, Encoding.UTF8))
             );
         }
+
+        internal static string CodeToGenerate(string nameSpace, string className)
+        {
+            return @$"
+                namespace {nameSpace}
+                {{
+                    public partial class {className}
+                    {{
+                        public void Print()
+                        {{
+                            System.Console.WriteLine(""Made with fluent generator"");
+                        }}
+                    }}
+                }}";
+        }
     }
 }
