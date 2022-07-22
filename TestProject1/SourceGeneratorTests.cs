@@ -1,4 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace TestProject1
 {
@@ -65,6 +70,23 @@ namespace TestProject1
         public void WithoutAnythingTest()
         {
 
+        }
+
+
+        public static void RunTest<T>(IEnumerable<SyntaxTree> sourceCode,
+            out Compilation outputCompilation,
+            out ImmutableArray<Diagnostic> diagnostics,
+            out GeneratorDriverRunResult driverResult)
+            where T : IIncrementalGenerator
+        {
+            var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            var inputCompilation = CSharpCompilation.Create("compilation", sourceCode, null, compilationOptions);
+            var generator = (T)Activator.CreateInstance(typeof(T))!;
+
+            var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(generator);
+            driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out outputCompilation, out diagnostics);
+
+            driverResult = driver.GetRunResult();
         }
     }
 }
