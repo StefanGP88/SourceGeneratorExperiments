@@ -118,8 +118,8 @@ namespace SourceGenLib.Extensions
             _foundClasses = _foundClasses.Where(x =>
             {
                 return x.Semantics.GetAttributes()
-                    .All(z =>!Equals(attrib!.ToString(), z.ToString()));
-            });
+                    .All(z => !Equals(attrib!.ToString(), z.ToString()));
+            }).ToList();
             return this;
         }
         public ClassFilter WithBaseClass<T>()
@@ -174,7 +174,7 @@ namespace SourceGenLib.Extensions
             {
                 return x.Semantics.Interfaces
                     .All(z => !Equals(interFace!.ToString(), z.ToString()));
-            });
+            }).ToList();
 
             return this;
         }
@@ -210,7 +210,7 @@ namespace SourceGenLib.Extensions
                     return z.GetAttributes()
                         .All(y => !Equals(attrib!.ToString(), y.ToString()));
                 });
-            });
+            }).ToList();
 
             return this;
         }

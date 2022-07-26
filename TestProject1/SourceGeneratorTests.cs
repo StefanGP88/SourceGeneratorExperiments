@@ -59,8 +59,8 @@ namespace TestProject1
         [TestMethod]
         public void WithMemberAttributeTest()
         {
-            RunTest<WithMemberAttributeTestGenerator>(SourceCode.WithoutMemberAttribute, out var result);
-            EvaluateResult(result, SourceCode.WithoutMemberAttributeExpectedResult);
+            RunTest<WithMemberAttributeTestGenerator>(SourceCode.WithMemberAttribute, out var result);
+            EvaluateResult(result, SourceCode.WithMemberAttributeExpectedResult);
         }
         ///Without member attribute
         [TestMethod]

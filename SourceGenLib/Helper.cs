@@ -9,21 +9,31 @@ namespace SourceGenLib
         internal static string TestMarkers = @"
 namespace FluentSyntaxGenerator.Unittest
 {
+    [IgnoreInTest]
     [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
     public class TestClassMarkerAttribute : System.Attribute
     {
     }
 
+    [IgnoreInTest]
     [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
     public class TestMemberMarkerAttribute : System.Attribute
     {
     }
 
+    [IgnoreInTest]
     public interface ITestInterFace
     {
     }
 
+    [IgnoreInTest]
     public class TestBaseClass
+    {
+    }
+
+    [IgnoreInTest]
+    [System.AttributeUsage(System.AttributeTargets.All, AllowMultiple = true)]
+    public class IgnoreInTestAttribute : System.Attribute
     {
     }
 }";

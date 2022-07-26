@@ -33,6 +33,7 @@ namespace FluentSyntaxGenerator.Unittest
                     var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
                     return codeString;
                 })
+                .WithoutAttribute<IgnoreInTestAttribute>()
                 .WithoutAttribute<TestClassMarkerAttribute>();
             });
         }
@@ -67,6 +68,7 @@ namespace FluentSyntaxGenerator.Unittest
                     var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
                     return codeString;
                 })
+                .WithoutAttribute<IgnoreInTestAttribute>()
                 .WithoutBaseClass<TestBaseClass>();
             });
         }
@@ -101,6 +103,7 @@ namespace FluentSyntaxGenerator.Unittest
                     var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
                     return codeString;
                 })
+                .WithoutAttribute<IgnoreInTestAttribute>()
                 .WithoutInterface<ITestInterFace>();
             });
         }
@@ -135,7 +138,8 @@ namespace FluentSyntaxGenerator.Unittest
                     var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
                     return codeString;
                 })
-                .WithMemberAttribute<TestMemberMarkerAttribute>();
+                .WithoutAttribute<IgnoreInTestAttribute>()
+                .WithoutMemberAttribute<TestMemberMarkerAttribute>();
             });
         }
     }
@@ -172,6 +176,7 @@ namespace FluentSyntaxGenerator.Unittest
                     var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
                     return codeString;
                 })
+                .WithoutAttribute<IgnoreInTestAttribute>()
                 .WithoutAttribute<TestClassMarkerAttribute>()
                 .WithoutInterface<ITestInterFace>()
                 .WithoutBaseClass<TestBaseClass>()
@@ -183,21 +188,31 @@ namespace FluentSyntaxGenerator.Unittest
 
 namespace FluentSyntaxGenerator.Unittest
 {
+    [IgnoreInTest]
     [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
     public class TestClassMarkerAttribute : System.Attribute
     {
     }
 
+    [IgnoreInTest]
     [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
     public class TestMemberMarkerAttribute : System.Attribute
     {
     }
 
+    [IgnoreInTest]
     public interface ITestInterFace
     {
     }
 
+    [IgnoreInTest]
     public class TestBaseClass
+    {
+    }
+
+    [IgnoreInTest]
+    [System.AttributeUsage(System.AttributeTargets.All, AllowMultiple = true)]
+    public class IgnoreInTestAttribute : System.Attribute
     {
     }
 }
