@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentGenerator.Test", "TestProject1\FluentGenerator.Test.csproj", "{64B8E17A-448C-489F-9FF6-50E9BCFD143C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentGenerator", "SourceGenLib.Extensions\FluentGenerator.csproj", "{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentGenerator.Test", "FluentGenerator.Test\FluentGenerator.Test.csproj", "{38E82A35-5765-46BB-AE2F-CB64108535B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{64B8E17A-448C-489F-9FF6-50E9BCFD143C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64B8E17A-448C-489F-9FF6-50E9BCFD143C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64B8E17A-448C-489F-9FF6-50E9BCFD143C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64B8E17A-448C-489F-9FF6-50E9BCFD143C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E82A35-5765-46BB-AE2F-CB64108535B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E82A35-5765-46BB-AE2F-CB64108535B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E82A35-5765-46BB-AE2F-CB64108535B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E82A35-5765-46BB-AE2F-CB64108535B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
