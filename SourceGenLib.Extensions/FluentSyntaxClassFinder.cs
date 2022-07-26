@@ -105,7 +105,7 @@ namespace SourceGenLib.Extensions
             {
                 return x.Semantics.GetAttributes()
                     .Any(z =>Equals(attrib!.ToString(), z.ToString()));
-            });
+            }).ToList();
             return this;
         }
         public ClassFilter WithoutAttribute<T>()
@@ -130,7 +130,8 @@ namespace SourceGenLib.Extensions
             }
 
             _foundClasses = _foundClasses
-                    .Where(x => Equals(baseClass!.ToString(), x.Semantics.BaseType?.ToString()));
+                    .Where(x => Equals(baseClass!.ToString(), x.Semantics.BaseType?.ToString()))
+                    .ToList();
 
             return this;
         }
@@ -142,7 +143,8 @@ namespace SourceGenLib.Extensions
             }
 
             _foundClasses = _foundClasses
-                    .Where(x => !Equals(baseClass!.ToString(), x.Semantics.BaseType?.ToString()));
+                    .Where(x => !Equals(baseClass!.ToString(), x.Semantics.BaseType?.ToString()))
+                    .ToList();
 
             return this;
         }
@@ -157,7 +159,7 @@ namespace SourceGenLib.Extensions
             {
                 return x.Semantics.Interfaces
                     .Any(z => Equals(interFace!.ToString(), z.ToString()));
-            });
+            }).ToList();
 
             return this;
         }
@@ -185,9 +187,12 @@ namespace SourceGenLib.Extensions
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetMembers()
-                    .Any(z => Equals(attrib!.ToString(), z.ToString()));
-            });
+                return x.Semantics.GetMembers().Any(z =>
+                {
+                    return z.GetAttributes()
+                        .Any(y => Equals(attrib!.ToString(), y.ToString()));
+                });
+            }).ToList();
 
             return this;
         }
@@ -200,8 +205,11 @@ namespace SourceGenLib.Extensions
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetMembers()
-                    .All(z => !Equals(attrib!.ToString(), z.ToString()));
+                return x.Semantics.GetMembers().All(z =>
+                {
+                    return z.GetAttributes()
+                        .All(y => !Equals(attrib!.ToString(), y.ToString()));
+                });
             });
 
             return this;
