@@ -98,21 +98,6 @@ namespace FluentSyntaxGenerator.UnitTest
 }
 ");
 
-        internal static SyntaxTree GetExpectedResult(string className)
-        {
-            return CSharpSyntaxTree.ParseText(@$"
-namespace FluentSyntaxGenerator.Unittest
-{{
-    public partial class {className}
-    {{
-        public void Print()
-        {{
-            System.Console.WriteLine(""Made with fluent generator"");
-        }}
-    }}
-}}
-");
-        }
         internal static SyntaxTree Markers => CSharpSyntaxTree.ParseText(@"
 namespace FluentSyntaxGenerator.Unittest
 {
@@ -144,5 +129,35 @@ namespace FluentSyntaxGenerator.Unittest
     {
     }
 }");
+
+        internal static SyntaxTree GetExpectedResult(string className)
+        {
+            return CSharpSyntaxTree.ParseText(@$"
+namespace FluentSyntaxGenerator.Unittest
+{{
+    public partial class {className}
+    {{
+        public void Print()
+        {{
+            System.Console.WriteLine(""Made with fluent generator"");
+        }}
+    }}
+}}
+");
+        }
+        internal static string CodeToGenerate(string nameSpace, string className)
+        {
+            return @$"
+                namespace {nameSpace}
+                {{
+                    public partial class {className}
+                    {{
+                        public void Print()
+                        {{
+                            System.Console.WriteLine(""Made with fluent generator"");
+                        }}
+                    }}
+                }}";
+        }
     }
 }
