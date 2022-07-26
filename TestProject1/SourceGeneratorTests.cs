@@ -1,13 +1,10 @@
 ﻿using FluentAssertions;
-using FluentSyntaxGenerator.Unittest;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 
-namespace TestProject1
+namespace FluentSyntaxGenerator.Unittest
 {
     [TestClass]
     public class SourceGeneratorTests

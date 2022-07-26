@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace TestProject1
+namespace FluentSyntaxGenerator.Unittest
 {
     internal static class SourceCode
     {

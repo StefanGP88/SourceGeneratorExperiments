@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SourceGenLib\SourceGenLib.csproj" />
+    <ProjectReference Include="..\SourceGenLib.Extensions\SourceGenLib.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

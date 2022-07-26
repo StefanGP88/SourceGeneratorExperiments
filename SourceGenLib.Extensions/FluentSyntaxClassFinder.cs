@@ -9,9 +9,9 @@ namespace SourceGenLib.Extensions
 {
     public class FluentSyntaxClassFinder
     {
-        private IncrementalGeneratorInitializationContext _context;
-        private IncrementalValuesProvider<ClassDeclarationSyntax> _classDeclarations;
-        private IncrementalValueProvider<(Compilation, ImmutableArray<ClassDeclarationSyntax>)> _compilatedClasses;
+        private readonly IncrementalGeneratorInitializationContext _context;
+        private readonly IncrementalValuesProvider<ClassDeclarationSyntax> _classDeclarations;
+        private readonly IncrementalValueProvider<(Compilation, ImmutableArray<ClassDeclarationSyntax>)> _compilatedClasses;
 
 
         public FluentSyntaxClassFinder(IncrementalGeneratorInitializationContext context)
