@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentGenerator.Prototype",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentGenerator.Demo", "FluentGenerator.Demo\FluentGenerator.Demo.csproj", "{9501AA02-AF2E-476E-86F5-B9977F9A9012}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentGenerator.Demo.Generators", "FluentGenerator.Demo.Generators\FluentGenerator.Demo.Generators.csproj", "{73BBA490-4398-46D9-AB64-E78F1188DB31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9501AA02-AF2E-476E-86F5-B9977F9A9012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9501AA02-AF2E-476E-86F5-B9977F9A9012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9501AA02-AF2E-476E-86F5-B9977F9A9012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73BBA490-4398-46D9-AB64-E78F1188DB31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73BBA490-4398-46D9-AB64-E78F1188DB31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73BBA490-4398-46D9-AB64-E78F1188DB31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73BBA490-4398-46D9-AB64-E78F1188DB31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
