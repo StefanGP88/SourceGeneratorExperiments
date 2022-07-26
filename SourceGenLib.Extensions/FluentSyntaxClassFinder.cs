@@ -45,15 +45,7 @@ namespace SourceGenLib.Extensions
 
                 for (int i = 0; i < list.Count(); i++)
                 {
-                    var myClassInfo = new MyClassInfo();
-
-                    myClassInfo.ClassName = list[i].DeclarationSyntax.Identifier.ToString();
-                    myClassInfo.NameSpace = list[i].Semantics.ContainingNamespace.ToString();
-                    myClassInfo.Modifiers = list[i].DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
-                    myClassInfo.InherritsFrom = list[i].Semantics.BaseType?.ToString();
-                    myClassInfo.Interfaces = list[i].Semantics.Interfaces.Select(x => x.Name).ToList();
-
-                    var code = classFilter._sourceBuilder(myClassInfo);
+                    var code = classFilter._sourceBuilder(list[i]);
                     var fileName = $"{classFilter.TemplateName}_{i}.g.cs";
 
                     sourceProductionContext.AddSource(fileName, code);
@@ -75,7 +67,7 @@ namespace SourceGenLib.Extensions
     {
         public Compilation _compilation;
         public IEnumerable<FoundClassContainer> _foundClasses;
-        public Func<MyClassInfo, string>? _sourceBuilder;
+        public Func<FoundClassContainer, string>? _sourceBuilder;
         public string? TemplateName;
         public ClassFilter(Compilation compilation, IEnumerable<ClassDeclarationSyntax> classes)
         {
@@ -216,7 +208,7 @@ namespace SourceGenLib.Extensions
         }
 
 
-        public ClassFilter SetCodeTemplate(string templateName, Func<MyClassInfo, string>? sourceBuilder)
+        public ClassFilter SetCodeTemplate(string templateName, Func<FoundClassContainer, string>? sourceBuilder)
         {
             TemplateName = templateName;
             _sourceBuilder = sourceBuilder;
@@ -256,7 +248,7 @@ namespace SourceGenLib.Extensions
         {
             get
             {
-                return _Class ??= Semantics.ToString();
+                return _Class ??= DeclarationSyntax.Identifier.ToString();
             }
         }
 

@@ -13,7 +13,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithAttributeTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithAttribute<TestClassMarkerAttribute>();
@@ -30,7 +30,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithoutAttributeTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithoutAttribute<IgnoreInTestAttribute>()
@@ -48,7 +48,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithBaseClassTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithBaseClass<TestBaseClass>();
@@ -65,7 +65,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithoutBaseClassTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithoutAttribute<IgnoreInTestAttribute>()
@@ -83,7 +83,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithInterfaceTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithInterface<ITestInterFace>();
@@ -100,7 +100,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithoutInterfaceTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithoutAttribute<IgnoreInTestAttribute>()
@@ -118,7 +118,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithMemberAttributeTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithMemberAttribute<TestMemberMarkerAttribute>();
@@ -135,7 +135,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithoutMemberAttributeTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithoutAttribute<IgnoreInTestAttribute>()
@@ -153,7 +153,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithEverythingTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithAttribute<TestClassMarkerAttribute>()
@@ -173,7 +173,7 @@ namespace FluentSyntaxGenerator.Unittest
             {
                 x.SetCodeTemplate("WithoutAnythingTestTemplate", code =>
                 {
-                    var codeString = Helper.CodeToGenerate(code.NameSpace!, code.ClassName!);
+                    var codeString = Helper.CodeToGenerate(code.Namespace!, code.Class!);
                     return codeString;
                 })
                 .WithoutAttribute<IgnoreInTestAttribute>()
