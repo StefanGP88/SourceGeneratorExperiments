@@ -4,7 +4,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>false</ImplicitUsings>
 		<LangVersion>Latest</LangVersion>
-		<VersionSuffix>ProtoType</VersionSuffix>
+		<VersionSuffix>Prototype</VersionSuffix>
 		<Title>FluentGenerator</Title>
 		<Description>A fluent syntax wrapper around the source generator api.</Description>
 		<AssemblyVersion>1.0.0</AssemblyVersion>
