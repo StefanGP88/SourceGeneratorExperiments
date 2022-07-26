@@ -9,7 +9,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithAttributeTestTemplate", code =>

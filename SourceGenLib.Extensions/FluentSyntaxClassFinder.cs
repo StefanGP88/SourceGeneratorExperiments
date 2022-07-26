@@ -47,7 +47,7 @@ namespace SourceGenLib.Extensions
                 {
                     var myClassInfo = new MyClassInfo();
 
-                    myClassInfo.ClassName = list[i].Semantics.ToString();
+                    myClassInfo.ClassName = list[i].DeclarationSyntax.Identifier.ToString();
                     myClassInfo.NameSpace = list[i].Semantics.ContainingNamespace.ToString();
                     myClassInfo.Modifiers = list[i].DeclarationSyntax.Modifiers.Select(x => x.Text).ToList();
                     myClassInfo.InherritsFrom = list[i].Semantics.BaseType?.ToString();
@@ -55,6 +55,8 @@ namespace SourceGenLib.Extensions
 
                     var code = classFilter._sourceBuilder(myClassInfo);
                     var fileName = $"{classFilter.TemplateName}_{i}.g.cs";
+
+                    sourceProductionContext.AddSource(fileName, code);
                 }
             });
         }
@@ -94,128 +96,112 @@ namespace SourceGenLib.Extensions
 
         public ClassFilter WithAttribute<T>()
         {
-            if (Exists<T>(out var attrib))
+            if (!Exists<T>(out var attrib))
             {
                 return this;
             }
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetAttributes().Any(z =>
-                {
-                    if (z.AttributeClass != null)
-                        return z.AttributeClass.Equals(attrib, SymbolEqualityComparer.Default);
-                    return false;
-                });
-
+                return x.Semantics.GetAttributes()
+                    .Any(z =>Equals(attrib!.ToString(), z.ToString()));
             });
             return this;
         }
         public ClassFilter WithoutAttribute<T>()
         {
-            if (Exists<T>(out var attrib))
+            if (!Exists<T>(out var attrib))
             {
                 return this;
             }
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetAttributes().All(z =>
-                {
-                    if (z.AttributeClass != null)
-                        return !z.AttributeClass.Equals(attrib, SymbolEqualityComparer.Default);
-                    return true;
-                });
-
+                return x.Semantics.GetAttributes()
+                    .All(z =>!Equals(attrib!.ToString(), z.ToString()));
             });
             return this;
         }
         public ClassFilter WithBaseClass<T>()
         {
-            if (Exists<T>(out var baseClass))
+            if (!Exists<T>(out var baseClass))
             {
                 return this;
             }
 
-            _foundClasses = _foundClasses.Where(x =>
-            {
-                if (x.Semantics.BaseType != null)
-                    return x.Semantics.BaseType.Equals(baseClass, SymbolEqualityComparer.Default);
-                return false;
-
-            });
+            _foundClasses = _foundClasses
+                    .Where(x => Equals(baseClass!.ToString(), x.Semantics.BaseType?.ToString()));
 
             return this;
         }
         public ClassFilter WithoutBaseClass<T>()
         {
-            if (Exists<T>(out var baseClass))
+            if (!Exists<T>(out var baseClass))
             {
                 return this;
             }
 
-            _foundClasses = _foundClasses.Where(x =>
-            {
-                if (x.Semantics.BaseType != null)
-                    return !x.Semantics.BaseType.Equals(baseClass, SymbolEqualityComparer.Default);
-                return true;
-
-            });
+            _foundClasses = _foundClasses
+                    .Where(x => !Equals(baseClass!.ToString(), x.Semantics.BaseType?.ToString()));
 
             return this;
         }
         public ClassFilter WithInterface<T>()
         {
-            if (Exists<T>(out var interFace))
+            if (!Exists<T>(out var interFace))
             {
                 return this;
             }
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.Interfaces.Any(x => x.Equals(interFace, SymbolEqualityComparer.Default));
+                return x.Semantics.Interfaces
+                    .Any(z => Equals(interFace!.ToString(), z.ToString()));
             });
 
             return this;
         }
         public ClassFilter WithoutInterface<T>()
         {
-            if (Exists<T>(out var interFace))
+            if (!Exists<T>(out var interFace))
             {
                 return this;
             }
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.Interfaces.All(x => !x.Equals(interFace, SymbolEqualityComparer.Default));
+                return x.Semantics.Interfaces
+                    .All(z => !Equals(interFace!.ToString(), z.ToString()));
             });
 
             return this;
         }
         public ClassFilter WithMemberAttribute<T>()
         {
-            if (Exists<T>(out var attrib))
+            if (!Exists<T>(out var attrib))
             {
                 return this;
             }
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetMembers().Any(x => x.Equals(attrib, SymbolEqualityComparer.Default));
+                return x.Semantics.GetMembers()
+                    .Any(z => Equals(attrib!.ToString(), z.ToString()));
             });
 
             return this;
         }
         public ClassFilter WithoutMemberAttribute<T>()
         {
-            if (Exists<T>(out var attrib))
+            if (!Exists<T>(out var attrib))
             {
                 return this;
             }
 
             _foundClasses = _foundClasses.Where(x =>
             {
-                return x.Semantics.GetMembers().All(x => !x.Equals(attrib, SymbolEqualityComparer.Default));
+                return x.Semantics.GetMembers()
+                    .All(z => !Equals(attrib!.ToString(), z.ToString()));
             });
 
             return this;
@@ -233,7 +219,6 @@ namespace SourceGenLib.Extensions
             symbol = _compilation.GetTypeByMetadataName(typeof(T).FullName);
             return symbol != null;
         }
-
     }
 
     public class FoundClassContainer

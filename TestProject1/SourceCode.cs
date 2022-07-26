@@ -113,5 +113,26 @@ namespace FluentSyntaxGenerator.Unittest
 }}
 ");
         }
+        internal static SyntaxTree Markers => CSharpSyntaxTree.ParseText(@"
+namespace FluentSyntaxGenerator.Unittest
+{
+    [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
+    public class TestClassMarkerAttribute : System.Attribute
+    {
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
+    public class TestMemberMarkerAttribute : System.Attribute
+    {
+    }
+
+    public interface ITestInterFace
+    {
+    }
+
+    public class TestBaseClass
+    {
+    }
+}");
     }
 }
