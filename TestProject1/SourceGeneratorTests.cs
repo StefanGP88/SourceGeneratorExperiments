@@ -24,55 +24,64 @@ namespace TestProject1
         [TestMethod]
         public void WithoutAttributeTest()
         {
-
+            RunTest<WithoutAttributeTestGenerator>(SourceCode.WithoutAttribute, out var result);
+            EvaluateResult(result, SourceCode.WithoutAttributeExpectedResult);
         }
         ///With base class
         [TestMethod]
         public void WithBaseClassTest()
         {
-
+            RunTest<WithBaseClassTestGenerator>(SourceCode.WithBaseClass, out var result);
+            EvaluateResult(result, SourceCode.WithBaseClassExpectedResult);
         }
         ///Without base class
         [TestMethod]
         public void WithoutBaseClassTest()
         {
-
+            RunTest<WithoutBaseClassTestGenerator>(SourceCode.WithoutBaseClass, out var result);
+            EvaluateResult(result, SourceCode.WithoutBaseClassExpectedResult);
         }
         ///With interface
         [TestMethod]
         public void WithInterfaceTest()
         {
-
+            RunTest<WithInterfaceTestGenerator>(SourceCode.WithInterface, out var result);
+            EvaluateResult(result, SourceCode.WithInterfaceExpectedResult);
         }
         ///Without interface
         [TestMethod]
         public void WithoutInterfaceTest()
         {
-
+            RunTest<WithoutInterfaceTestGenerator>(SourceCode.WithoutInterface, out var result);
+            EvaluateResult(result, SourceCode.WithoutInterfaceExpectedResult);
         }
         ///With member atrribute
         [TestMethod]
         public void WithMemberAttributeTest()
         {
-
+            RunTest<WithMemberAttributeTestGenerator>(SourceCode.WithoutMemberAttribute, out var result);
+            EvaluateResult(result, SourceCode.WithoutMemberAttributeExpectedResult);
         }
         ///Without member attribute
         [TestMethod]
         public void WithoutMemberAttributeTest()
         {
-
+            RunTest<WithoutMemberAttributeTestGenerator>(SourceCode.WithoutMemberAttribute, out var result);
+            EvaluateResult(result, SourceCode.WithoutMemberAttributeExpectedResult);
         }
         ///With everything
         [TestMethod]
         public void WithEverythingTest()
         {
-
+            RunTest<WithEverythingTestGenerator>(SourceCode.WithEverything, out var result);
+            EvaluateResult(result, SourceCode.WithEverythingExpectedResult);
         }
         ///Without anything
         [TestMethod]
         public void WithoutAnythingTest()
         {
-
+            RunTest<WithoutAnythingTestGenerator>(SourceCode.WithoutAnything, out var result);
+            EvaluateResult(result, SourceCode.WithoutAnythingExpectedResult);
         }
 
         public static void RunTest<T>(SyntaxTree syntaxTree,

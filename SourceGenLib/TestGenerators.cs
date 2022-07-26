@@ -26,7 +26,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithoutAttributeTestTemplate", code =>
@@ -44,7 +43,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithBaseClassTestTemplate", code =>
@@ -62,7 +60,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithoutBaseClassTestTemplate", code =>
@@ -80,7 +77,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithInterfaceTestTemplate", code =>
@@ -98,7 +94,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithoutInterfaceTestTemplate", code =>
@@ -116,7 +111,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithMemberAttributeTestTemplate", code =>
@@ -134,7 +128,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithoutMemberAttributeTestTemplate", code =>
@@ -152,7 +145,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithEverythingTestTemplate", code =>
@@ -173,7 +165,6 @@ namespace FluentSyntaxGenerator.Unittest
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.AddMarkers();
             context.CodeTemplate(x =>
             {
                 x.SetCodeTemplate("WithoutAnythingTestTemplate", code =>
