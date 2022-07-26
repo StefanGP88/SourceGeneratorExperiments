@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject1", "TestProject1\TestProject1.csproj", "{64B8E17A-448C-489F-9FF6-50E9BCFD143C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceGenLib.Extensions", "SourceGenLib.Extensions\SourceGenLib.Extensions.csproj", "{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentGenerator", "SourceGenLib.Extensions\FluentGenerator.csproj", "{9B31DB77-19E9-4C46-8AE6-9665338DA0C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

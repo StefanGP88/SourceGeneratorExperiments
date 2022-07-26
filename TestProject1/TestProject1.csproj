@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SourceGenLib.Extensions\SourceGenLib.Extensions.csproj" />
+    <ProjectReference Include="..\SourceGenLib.Extensions\FluentGenerator.csproj" />
   </ItemGroup>
 
 </Project>

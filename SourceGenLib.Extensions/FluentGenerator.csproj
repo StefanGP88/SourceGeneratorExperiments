@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>false</ImplicitUsings>
 		<LangVersion>Latest</LangVersion>
+		<VersionSuffix>ProtoType</VersionSuffix>
+		<Title>FluentGenerator</Title>
+		<Description>A fluent syntax wrapper around the source generator api.</Description>
+		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<Version>$(AssemblyVersion)-$(VersionSuffix)</Version>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all" />
